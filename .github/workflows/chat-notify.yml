@@ -1,0 +1,31 @@
+# ワークフローの名前
+name: Google Chat Notification
+
+# ワークフローが実行されるタイミング
+on:
+  # mainブランチ以外へのプッシュをトリガーにする
+  push:
+    branches-ignore:
+      - 'main'
+
+# 実行されるジョブ
+jobs:
+  notify:
+    # 実行環境
+    runs-on: ubuntu-latest
+    steps:
+      # Google Chatへの通知を行うための便利なアクション（他者作成）を利用
+      - name: Send notification to Google Chat
+        uses: Co-qn/google-chat-notification@v1.5.0
+        with:
+          # GitHubのSecretに保存したWebhook URLを安全に呼び出す
+          webhook_url: ${{ secrets.CHAT_WEBHOOK_URL }}
+          # ジョブのステータス（成功: success, 失敗: failureなど）
+          status: ${{ job.status }}
+          # 送信するメッセージ本文
+          message: |
+            課題が提出されました！
+            リポジトリ: ${{ github.repository }}
+            ブランチ: `${{ github.ref_name }}`
+            提出者: `${{ github.actor }}`
+            コミットを確認: ${{ github.server_url }}/${{ github.repository }}/commit/${{ github.sha }}
