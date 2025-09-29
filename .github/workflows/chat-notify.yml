@@ -16,7 +16,7 @@ jobs:
     steps:
       # Google Chatへの通知を行うための便利なアクション（他者作成）を利用
       - name: Send notification to Google Chat
-        uses: Co-qn/google-chat-notification@v1.5.0
+        uses: Co-qn/google-chat-notification@releases/v1
         with:
           # GitHubのSecretに保存したWebhook URLを安全に呼び出す
           webhook_url: ${{ secrets.CHAT_WEBHOOK_URL }}
