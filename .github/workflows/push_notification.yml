@@ -1,4 +1,4 @@
-name: Notify GAS on push
+name: Notify GAS and Chat on push
 
 on:
   push:
@@ -14,3 +14,9 @@ jobs:
           curl -sS -X POST "https://script.google.com/macros/s/AKfycbxLB5zeSmnjqkCoutfjCrY2IRtE9rgc8bbDUDqhA6x0PECYF26gZbjTw6EPK4UWniE8/exec" \
                -H "Content-Type: application/json" \
                -d @"$GITHUB_EVENT_PATH"
+
+      - name: Send notification to Google Chat
+        run: |
+          curl -X POST "https://chat.googleapis.com/v1/spaces/AAQA0H40i0Y/messages?key=AIzaSyDdI0hCZtE6vySjMm-WEfRq3CPzqKqqsHI&token=-UYESV7uoXnYqLl406DK-t4gwMiQg-e-muahev3Nlic" \
+            -H 'Content-Type: application/json' \
+            -d '{ "text": "課題が提出されました！\nリポジトリ: ${{ github.repository }}\n提出者: `${{ github.actor }}`\nブランチ: `${{ github.ref_name }}`\nコミットを確認: ${{ github.server_url }}/${{ github.repository }}/commit/${{ github.sha }}" }'
