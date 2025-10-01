@@ -1,0 +1,39 @@
+name: Notify GAS on push
+
+on:
+  push:
+    branches: ["main"] # 例：main に push したら通知
+  workflow_dispatch: # 手動実行も可
+
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Build payload and POST to GAS
+        run: |
+          WEBHOOK_URL="https://script.google.com/macros/s/AKfycbxLB5zeSmnjqkCoutfjCrY2IRtE9rgc8bbDUDqhA6x0PECYF26gZbjTw6EPK4UWniE8/exec"
+
+          # GitHub が提供するイベント JSON から最低限の情報を抽出
+          REPO="$GITHUB_REPOSITORY"
+          REF="$GITHUB_REF"
+          ACTOR="$GITHUB_ACTOR"
+          COMPARE=$(jq -r '.compare // ""' "$GITHUB_EVENT_PATH")
+          COMMITS_COUNT=$(jq '.commits | length' "$GITHUB_EVENT_PATH")
+
+          # 送信ボディを作成
+          BODY=$(jq -n \
+            --arg repository "$REPO" \
+            --arg ref        "$REF" \
+            --arg actor      "$ACTOR" \
+            --arg compare    "$COMPARE" \
+            --argjson commits_count "$COMMITS_COUNT" \
+            '{repository, ref, actor, compare, commits_count}')
+
+          echo "Payload to GAS:"
+          echo "$BODY" | jq .
+
+          # POST（認証なし）
+          curl -sS -X POST "$WEBHOOK_URL" \
+               -H "Content-Type: application/json" \
+               -d "$BODY" \
+               -o /dev/stderr -w "\nHTTP %{http_code}\n"
