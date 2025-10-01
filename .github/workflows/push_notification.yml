@@ -2,7 +2,7 @@ name: Notify GAS on push
 
 on:
   push:
-    branches: ["main"] # 例：main に push したら通知
+    branches: ["*"] # 任意のブランチにpushしたら通知
   workflow_dispatch: # 手動実行も可
 
 jobs:
