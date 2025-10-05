@@ -17,6 +17,6 @@ jobs:
 
       - name: Send notification to Google Chat
         run: |
-          curl -X POST "https://chat.googleapis.com/v1/spaces/AAQA0H40i0Y/messages?key=AIzaSyDdI0hCZtE6vySjMm-WEfRq3CPzqKqqsHI&token=-UYESV7uoXnYqLl406DK-t4gwMiQg-e-muahev3Nlic" \
+          curl -X POST "https://chat.googleapis.com/v1/spaces/AAQAwW7wIiU/messages?key=AIzaSyDdI0hCZtE6vySjMm-WEfRq3CPzqKqqsHI&token=DRthR6cKvHV6Oma_CnEsvhLNSKnlsc5CLIugDy1HFwE" \
             -H 'Content-Type: application/json' \
             -d '{ "text": "課題が提出されました！\nリポジトリ: ${{ github.repository }}\n提出者: `${{ github.actor }}`\nブランチ: `${{ github.ref_name }}`\nコミットを確認: ${{ github.server_url }}/${{ github.repository }}/commit/${{ github.sha }}" }'
