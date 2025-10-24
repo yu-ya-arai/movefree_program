@@ -1,0 +1,10 @@
+{
+    "name": "yunan/level1",
+    "description": "MoveFree Level 1",
+    "require-dev": {
+        "monolog/monolog": "^3.9"
+    },
+    "require": {
+        "vlucas/phpdotenv": "^5.6"
+    }
+}
